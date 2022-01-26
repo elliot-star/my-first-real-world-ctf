@@ -8,7 +8,7 @@
 ### Source code of challenge link
 > https://github.com/parrt/simple-virtual-machine-C
 
-Solution Is written in note-md
+# Solution is written in note-md
 ### compiler.c : for translating code from virtual machine instruction to byte code
 ### fuzz.c : random input producer to test our program crashing state.
 ### Everything related to challenge is in material folder
