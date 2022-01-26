@@ -1,6 +1,6 @@
 # My First real world CTF
-## Simple Virtual Machine 
-## Challenge description 
+### Simple Virtual Machine 
+### Challenge description 
 > Professor Terence Parr has taught
 > us how to create a virtual machine 
 > Now it is time to pwn virtual machine
