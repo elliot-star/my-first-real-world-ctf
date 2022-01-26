@@ -93,7 +93,7 @@ compile(list_t *bytearray, char *file)
 
     /*
      * if string start with # then it will
-     * consumes whole string all string 
+     * consumes whole string as comment
      * and does store any space for it.
      *
      * else we map string in array that is 
