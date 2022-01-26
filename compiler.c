@@ -142,21 +142,20 @@ xfree(list_t *bytearray)
     free(bytearray->buf_ptr);
 }
 
-
 /*
- * find string
- * from vm_instructions
- * if found than
- * return its
- * index else return -1
+ * comparing vm->name for binary search
+ * and qsort 
  */
-int find(char *string)
+
+static int
+compar(const void *p1, const void *p2)
 {
-    for (int i = 0; i < ARR_LEN(vm_instructions); i++)
-        if (!strcmp(string, vm_instructions[i].name))
-            return i;
-    return -1;
+    VM_INSTRUCTION *m1 = (VM_INSTRUCTION *)p1;
+    VM_INSTRUCTION *m2 = (VM_INSTRUCTION *)p2;
+
+    return strcmp(m1->name, m2->name);
 }
+
 
 int 
 main(int argc, char **argv)
@@ -196,6 +195,9 @@ main(int argc, char **argv)
     if (instruction_array == NULL)
         errMsg("malloc");
 
+    /* quick sorting instruction for fast access */
+    qsort(vm_instructions, ARR_LEN(vm_instructions), sizeof(VM_INSTRUCTION), compar);
+
     /*
      * validate instruction one
      * after and another 
@@ -204,13 +206,22 @@ main(int argc, char **argv)
      */
     for (cur_ptr = 0; cur_ptr < bytearray.len; ++cur_ptr)
     {
-        instruction_array[cur_ptr] = find(bytearray.buf_ptr[cur_ptr]);
-        if (instruction_array[cur_ptr] == -1)
+        VM_INSTRUCTION key;
+        VM_INSTRUCTION *res;
+        
+        /* binary search for instruct name */
+        sscanf(bytearray.buf_ptr[cur_ptr], "%7s", key.name);
+        res = bsearch(&key, vm_instructions, ARR_LEN(vm_instructions), sizeof(VM_INSTRUCTION), compar);
+
+        if (res == NULL)
         {
-            fprintf(stderr, "Invalid Instruction \"%s\":(\n", bytearray.buf_ptr[cur_ptr]);
+            fprintf(stderr, "Invalid Instruction \"%s\":(\n", key.name);
             goto out;
         }
-        opt = vm_instructions[instruction_array[cur_ptr]].nargs;
+
+        /* copy instruction */
+        instruction_array[cur_ptr] = res->instruction;
+        opt = res->nargs;
 repeat:
         if (opt-- > 0 && (cur_ptr+1 < bytearray.len))
         {
