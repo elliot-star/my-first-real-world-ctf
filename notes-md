@@ -2,15 +2,15 @@
     Real world CTF 2022: simple virtual machine
 ************************************************************/
 
-this was my First real world CTF :) and I not solved completely
-challenge during the CTF time but I solved 80% uptill changing
+this was my First real world CTF :) and I have not completely solved  
+challenge during the CTF time , I solved 80%, uptil changing
 variable values and writing memory but Afterwards I completed
 whole as I learn so much from this challenge. 
 
 Firstly, I don't understand where to start because TIFC
 So, I heard of fuzzing and also wrote some simple fuzzing C program
 so I started with that I wrote simple fuzzing with some crafted random 
-input in program as program.(fuzz.c)
+input in program. program: (fuzz.c)
  
 As the program is crashing many times with segfault so I
 got very excited and started examining testcases and run
@@ -21,8 +21,8 @@ doing with the input and then I was getting some understanding
 of the source code I started reading whole program and 
 
 I seen some thing weird about load instruction where It taking
-input from the user without for where to read and where
-to write in memory but it is checking anything about it.
+input from the user without checking where to read and where
+to write in memory, so we can write and read arbitrarly
 
 But, still It is not as easy as it seems in first glance when
 I see that It is using (int32_t) as input so we can't
@@ -64,7 +64,7 @@ binary ELF
                                                                                  horizontally left )
 
 Now we have everything getting started with challenge.
-our compiler and program that main.c which you can compile.
+our compiler and program that main.c which you can compile it.
 
 In vm.c let's look at source code of virtual machine
 mainly in instruction load, store, gload and gstore
@@ -77,14 +77,14 @@ load case:
 
 
     In above to lines It takes input from user as bytecode
-    and the execute this cases.
+    and then execute this instructions.
     where,
     offset is user inputted argv 1 i.e (load argv1)
 
     2nd line that will store data from 
      vm->call_stack[callsp].locals[offset];
     and offset is already controlled by us.
-    so we can read from anywhere uptill 2 ^ 32
+    so we can read from anywhere uptil 2 ^ 32
 
 
 gload case:
@@ -125,7 +125,7 @@ Non-writable code section.
 
 But above things will not affect as at all we are using 
 array indexes means our code crafted data will be loaded
-at our deceded position.
+at our decided position.
 
 So our approach is by using return oriented programming which
 works like this:
@@ -158,7 +158,7 @@ next rip
     instruction from the stack and jump
     to that offset.
 
-We have two read-write from location:
+We have two read-write from locations:
     vm->call_stack[callsp].locals[offset];
     vm->globals[addr];
 
@@ -187,11 +187,10 @@ we use locals in order to write vm->globals.
 &vm->globals == vm->call_stack[callsp].locals[(0x555befd712b0-0x555befd72234)/4]
 &vm->code == vm->call_stack[callsp].locals[(0x555befd712a0-0x555befd72234)/4]
 
-// address of locals is afterwards as it is initialize afterwards
-
+// use locals variable to read from vm->code and write vm->globals
 
 Before reaching to ret instruction there is 
-free which segfault if we have already inputted
+free which segfault if we have 
 random data in it. so can store address of vm->globals
 before overwriting it and then restore address afterwards
 before calling free.
