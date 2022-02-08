@@ -18,9 +18,6 @@
 > ropper
 > radare2
 
-/************************************************************
-   Real world CTF 2022: simple virtual machine
-************************************************************/
 
 this was my First real world CTF :) and I have not completely solved  
 challenge during the CTF time , I solved 80%, uptil changing
