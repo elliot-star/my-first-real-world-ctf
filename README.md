@@ -1,4 +1,4 @@
-# My First real world CTF
+# First real world CTF
 ### Simple Virtual Machine 
 ### Challenge description 
 > Professor Terence Parr has taught
